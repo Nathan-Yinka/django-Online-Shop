@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,8 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # the application
     "shop.apps.ShopConfig",
     "cart.apps.CartConfig",
+    "orders.apps.OrdersConfig",
+    "payment.apps.PaymentConfig",
 ]
 
 MIDDLEWARE = [
@@ -64,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "cart.context_processors.cart"
             ],
         },
     },
@@ -128,3 +138,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CART_SESSION_ID = 'cart'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = "api.backend.EmailBackend"
+
+# EMAIL_HOST = "live.smtp.mailtrap.io"
+# EMAIL_HOST_USER = "api"
+# EMAIL_HOST_PASSWORD = "07a34076c8c08abea3025939468388f3"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# from django.core.mail import send_mail
+# send_mail('Django mail',"This e-mail was sent with Django",'nathanace12345@gmail.com',["oludarenathaniel@gmail.com"],fail_silently=False)
+
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# from django.core.mail import send_mail
+# send_mail('Django mail',"This e-mail was sent with Django",'nathanace12345@gmail.com',["oludarenathaniel@gmail.com"],fail_silently=False)
+
+
+
+
+# stripe payment 
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY") # Publishable key
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY") # Secret key
+STRIPE_API_VERSION = os.getenv("STRIPE_API_VERSION")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")

@@ -48,7 +48,7 @@ class Cart:
         from the database.
         """ 
         product_ids = self.cart.keys()
-        # gte the product object and add them to the cart
+        # get the product object and add them to the cart
         products = Product.objects.filter(id__in = product_ids)
         cart = self.cart.copy()
         for product in products:
@@ -57,6 +57,7 @@ class Cart:
             item["price"] = Decimal(item["price"])
             item["total_price"] = item["price"] * item["quantity"]
             yield item
+        # print(cart)
             
     def __len__(self):
         """Count the lenght of a the items inthe cart
