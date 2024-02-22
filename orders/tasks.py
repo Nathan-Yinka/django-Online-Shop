@@ -28,7 +28,7 @@ def order_created(order_id):
 
         mail_sent = send_mail(subject,
                               message,
-                              'techstudioacademy@technologynathan.com',
+                              'teashop@technologynathan.com',
                               [order.email])
         return mail_sent
     except Exception as e:

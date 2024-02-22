@@ -38,7 +38,7 @@ def payment_process(request):
                     },
                 },
                 "quantity":item.quantity,
-                "unit_amount":item.product.price
+                # "unit_amount":item.product.price
             })
         
         # create Stripe checkout session
