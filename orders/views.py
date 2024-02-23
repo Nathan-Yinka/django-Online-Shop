@@ -9,6 +9,8 @@ import weasyprint
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.http import HttpResponse
+from shop.recommeder import Recommender
+from shop.models import Product
 # Create your views here.
 
 def order_create(request):
@@ -22,6 +24,8 @@ def order_create(request):
                 order.discount = cart.coupon.discount
             
             order.save()
+            
+            products = []
                 
             for item in cart:
                 OrderItem.objects.create(
@@ -30,6 +34,12 @@ def order_create(request):
                     price=item["price"],
                     quantity=item["quantity"]
                 )
+                products.append(item["product"])
+                
+            # add the product to the recommendaton storage
+            r =Recommender()
+            r.products_bought(products)
+                
             cart.clear()
             
             # launch asynchronous task
