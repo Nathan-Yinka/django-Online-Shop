@@ -1,0 +1,4 @@
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management  #rabbitmq command to run from docker
+celery -A myshop worker -l info #celery command to run with the rabbitmq
+stripe listen --forward-to localhost:8000/payment/webhook/   #stripe command for the webhook cli
+celery -A myshop flower #celery command to run with the flower
